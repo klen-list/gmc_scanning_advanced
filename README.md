@@ -1,2 +1,2 @@
 # scanning-advanced
-Collection of symbols for sigscan with gmod_common
+My own collection of symbols for sigscan with [gmod_common](https://github.com/danielga/garrysmod_common)
