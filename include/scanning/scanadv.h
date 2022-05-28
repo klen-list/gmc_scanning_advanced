@@ -17,6 +17,7 @@ class CPhysicsHook;
 class CCollisionEvent;
 class IPhysicsObject;
 class CBaseEntity;
+class CGameTrace;
 
 namespace ScanningAdvanced
 {
@@ -27,6 +28,7 @@ namespace ScanningAdvanced
 		extern const Symbol expand_tree;
 		extern const Symbol CCollisionEvent_ShouldFreezeContacts;
 		extern const Symbol UTIL_Remove;
+		extern const Symbol UTIL_PlayerDecalTrace;
 	}
 
 	template <class T>
@@ -78,4 +80,7 @@ namespace ScanningAdvanced
 
 	typedef void (*UTIL_Remove_t)(CBaseEntity* pEnt);
 	UTIL_Remove_t UTIL_Remove();
+
+	typedef void (*UTIL_PlayerDecalTrace_t)(CGameTrace* pTrace, int playernum);
+	UTIL_PlayerDecalTrace_t UTIL_PlayerDecalTrace();
 }
