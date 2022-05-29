@@ -88,5 +88,5 @@ namespace ScanningAdvanced
 	UTIL_PlayerDecalTrace_t UTIL_PlayerDecalTrace();
 
 	typedef INetworkStringTable* (*CBaseServer_GetUserInfoTable_t)(CBaseServer* _this);
-	CBaseServer_GetUserInfoTable_t CBaseServer_GetUserInfoTable();
+	__declspec(deprecated("Broken! (always return 0x1)")) CBaseServer_GetUserInfoTable_t CBaseServer_GetUserInfoTable();
 }
