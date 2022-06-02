@@ -2,8 +2,6 @@
 
 namespace ScanningAdvanced
 {
-	static SymbolFinder symbolfinder;
-
 	namespace Symbols {
 		#ifdef SYSTEM_WINDOWS
 			#ifdef ARCHITECTURE_X86

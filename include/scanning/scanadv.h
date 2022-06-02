@@ -33,6 +33,8 @@ namespace ScanningAdvanced
 		extern const Symbol UTIL_PlayerDecalTrace;
 		extern const Symbol CBaseServer_GetUserInfoTable;
 	}
+	
+	static SymbolFinder symbolfinder;
 
 	template <class T>
 	static inline T SigResolve(SourceSDK::FactoryLoader& loader, const Symbol& symbol, const char* name)
