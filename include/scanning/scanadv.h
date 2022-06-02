@@ -1,4 +1,4 @@
-#pragma	once
+#pragma once
 
 #include <GarrysMod/FactoryLoader.hpp>
 #include <GarrysMod/Symbol.hpp>
