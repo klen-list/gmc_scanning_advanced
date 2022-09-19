@@ -18,8 +18,8 @@ class CCollisionEvent;
 class IPhysicsObject;
 class CBaseEntity;
 class CGameTrace;
-class CBaseServer;
 class INetworkStringTable;
+class CBaseClientState;
 
 namespace ScanningAdvanced
 {
@@ -31,7 +31,7 @@ namespace ScanningAdvanced
 		extern const Symbol CCollisionEvent_ShouldFreezeContacts;
 		extern const Symbol UTIL_Remove;
 		extern const Symbol UTIL_PlayerDecalTrace;
-		extern const Symbol CBaseServer_GetUserInfoTable;
+		extern const Symbol CBaseClientState_SetSignonState;
 	}
 	
 	static SymbolFinder symbolfinder;
@@ -89,6 +89,6 @@ namespace ScanningAdvanced
 	typedef void (*UTIL_PlayerDecalTrace_t)(CGameTrace* pTrace, int playernum);
 	UTIL_PlayerDecalTrace_t UTIL_PlayerDecalTrace();
 
-	typedef INetworkStringTable* (*CBaseServer_GetUserInfoTable_t)(CBaseServer* _this);
-	__declspec(deprecated("Broken! (always return 0x1)")) CBaseServer_GetUserInfoTable_t CBaseServer_GetUserInfoTable();
+	typedef bool (__thiscall *CBaseClientState_SetSignonState_t)(CBaseClientState* state, int signon_state, int spawn_count);
+	CBaseClientState_SetSignonState_t CBaseClientState_SetSignonState();
 }

@@ -3,9 +3,8 @@
 namespace ScanningAdvanced
 {
 	namespace Symbols {
-		#ifdef SYSTEM_WINDOWS
-			#ifdef ARCHITECTURE_X86
-		const Symbol CBaseServer_GetUserInfoTable = Symbol::FromSignature("\x55\x8B\xEC\x51\x53\x8B\xD9\x57\x33\xFF\x89\x5D\xFC\x8B\x8B\xD0\x00\x00\x00\x85\xC9\x75\x28\x8B\x8B\xC4\x00\x00\x00\x85\xC9\x74\x16\x8B\x01");
+#ifdef SYSTEM_WINDOWS
+#ifdef ARCHITECTURE_X86
 		const Symbol UTIL_PlayerDecalTrace = Symbol::FromSignature("\x55\x8B\xEC\x83\xEC\x20\x56\x8B\x75\x08\xF3\x0F\x10\x46\x2C\x0F\x2E\x05****\x9F\xF6\xC4\x44\x7B\x4E\x8D\x4D\xE0\xE8****\x8D\x4D");
 		const Symbol UTIL_Remove = Symbol::FromSignature("TODO_TODO_TODO");
 		const Symbol CCollisionEvent_ShouldFreezeContacts = Symbol::FromSignature("\x55\x8B\xEC\x8B\x15\x58\x2C**\x56\x8B\xF1\x8B\x42\x18\x8B\x8E\x5C\x01\x00\x00\x3B\xC8\x7F*\x48\x3B\xC8\x7D*");
@@ -13,8 +12,8 @@ namespace ScanningAdvanced
 		const Symbol PhysOnCleanupDeleteList = Symbol::FromSignature("\xB9\xC8\xC5**\xE8\x46\xD7**\x8B\x0D\x58\xAF**\x85\xC9\x74*\x8B\x01\xFF\xA0\xC4\x00\x00\x00\xC3");
 		const Symbol PhysIsInCallback = Symbol::FromSignature("\x8B\x0D\x58\xAF**\x85\xC9\x74*\x8B\x01\x8B\x80\x8C\x00\x00\x00\xFF\xD0\x84\xC0\x75*\x83\x3D\x24***\x00\x7E*\xB0\x01\xC3\x32\xC0\xC3");
 		const Symbol expand_tree = Symbol::FromSignature("\x55\x8B\xEC\x83\xEC\x08\x53\x56\x8B\xF1\x8B\x46\x34\x8B\x40\x10\x57\x89*\xF8\x83\xF8\x28\x7E*\x50\x68\x48***\xE8\x74***\x83\xC4\x08");
-			#elif ARCHITECTURE_X86_64
-		const Symbol CBaseServer_GetUserInfoTable = Symbol::FromSignature("TODO_TODO_TODO");
+		const Symbol CBaseClientState_SetSignonState = Symbol::FromSignature("\x55\x8B\xEC\x56\x57\x8B\x7D\x08\x8B\xF1\x83\xFF\x07\x77\x1B\x83\xFF\x02");
+#elif ARCHITECTURE_X86_64
 		const Symbol UTIL_PlayerDecalTrace = Symbol::FromSignature("TODO_TODO_TODO");
 		const Symbol UTIL_Remove = Symbol::FromSignature("\x48\x83\xEC\x28\x48\x85\xC9\x0F\x84****\x48\x89\x5C\x24\x30\x48\x8D\x59\x18\x48\x85\xDB\x74*\x48\x8B\xCB\xE8****\x84\xC0\x75\x67\xE8****");
 		const Symbol CCollisionEvent_ShouldFreezeContacts = Symbol::FromSignature("\x40\x53\x48\x83\xEC\x20\x48\x8B\x15****\x48\x8B\xD9\x8B\x89\x04\x02\x00\x00\x8B\x42\x18\x3B\xC8\x7F*\xFF\xC8\x3B\xC8\x7D*");
@@ -22,10 +21,10 @@ namespace ScanningAdvanced
 		const Symbol PhysOnCleanupDeleteList = Symbol::FromSignature("TODO_TODO_TODO");
 		const Symbol PhysIsInCallback = Symbol::FromName("?PhysIsInCallback@@YA_NXZ");
 		const Symbol expand_tree = Symbol::FromSignature("TODO_TODO_TODO");
-			#endif
-		#elif SYSTEM_LINUX
-			#ifdef ARCHITECTURE_X86
-		const Symbol CBaseServer_GetUserInfoTable = Symbol::FromName("_ZN11CBaseServer16GetUserInfoTableEv");
+		const Symbol CBaseClientState_SetSignonState = Symbol::FromSignature("\x48\x89\x5C\x24*\x48\x89\x74\x24*\x57\x48\x83\xEC\x20\x41\x8B\xF0\x8B");
+#endif
+#elif SYSTEM_LINUX
+#ifdef ARCHITECTURE_X86
 		const Symbol UTIL_PlayerDecalTrace = Symbol::FromName("_Z21UTIL_PlayerDecalTraceP10CGameTracei");
 		const Symbol UTIL_Remove = Symbol::FromName("_Z11UTIL_RemoveP11CBaseEntity");
 		const Symbol CCollisionEvent_ShouldFreezeContacts = Symbol::FromName("_ZN15CCollisionEvent20ShouldFreezeContactsEPP14IPhysicsObjecti");
@@ -33,8 +32,8 @@ namespace ScanningAdvanced
 		const Symbol PhysOnCleanupDeleteList = Symbol::FromName("_Z23PhysOnCleanupDeleteListv");
 		const Symbol PhysIsInCallback = Symbol::FromName("_Z16PhysIsInCallbackv");
 		const Symbol expand_tree = Symbol::FromName("_ZN19IVP_OV_Tree_Manager11expand_treeEPK11IVP_OV_Node");
-			#elif ARCHITECTURE_X86_64
-		const Symbol CBaseServer_GetUserInfoTable = Symbol::FromSignature("TODO_TODO_TODO");
+		const Symbol CBaseClientState_SetSignonState = Symbol::FromSignature("TODO_TODO_TODO");
+#elif ARCHITECTURE_X86_64
 		const Symbol UTIL_PlayerDecalTrace = Symbol::FromSignature("TODO_TODO_TODO");
 		const Symbol UTIL_Remove = Symbol::FromName("TODO_TODO_TODO");
 		const Symbol CCollisionEvent_ShouldFreezeContacts = Symbol::FromName("TODO_TODO_TODO");
@@ -42,8 +41,9 @@ namespace ScanningAdvanced
 		const Symbol PhysOnCleanupDeleteList = Symbol::FromName("TODO_TODO_TODO");
 		const Symbol PhysIsInCallback = Symbol::FromName("TODO_TODO_TODO");
 		const Symbol expand_tree = Symbol::FromName("TODO_TODO_TODO");
-			#endif
-		#endif
+		const Symbol CBaseClientState_SetSignonState = Symbol::FromSignature("TODO_TODO_TODO");
+#endif
+#endif
 	}
 
 	PhysicsGameSystem_t PhysicsGameSystem()
@@ -84,18 +84,22 @@ namespace ScanningAdvanced
 
 	expand_tree_t expand_tree()
 	{
-		#if SYSTEM_WINDOWS
+#if SYSTEM_WINDOWS
 		static SourceSDK::FactoryLoader vphys_loader("vphysics");
-		#elif SYSTEM_LINUX
+#elif SYSTEM_LINUX
 		static SourceSDK::FactoryLoader vphys_loader("vphysics_srv");
-		#endif
+#endif
 
 		return SigResolve<expand_tree_t>(vphys_loader, Symbols::expand_tree, "IVP_OV_Tree_Manager::expand_tree");
 	}
 
-	CBaseServer_GetUserInfoTable_t CBaseServer_GetUserInfoTable()
+	CBaseClientState_SetSignonState_t CBaseClientState_SetSignonState()
 	{
+#if SYSTEM_WINDOWS
 		static SourceSDK::FactoryLoader engine_loader("engine");
-		return SigResolve<CBaseServer_GetUserInfoTable_t>(engine_loader, Symbols::CBaseServer_GetUserInfoTable, "CBaseServer::GetUserInfoTable");
+#elif SYSTEM_LINUX
+		static SourceSDK::FactoryLoader engine_loader("engine_client");
+#endif
+		return SigResolve<CBaseClientState_SetSignonState_t>(engine_loader, Symbols::CBaseClientState_SetSignonState, "CBaseClientState::SetSignonState");
 	}
 }
