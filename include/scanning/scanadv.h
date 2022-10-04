@@ -32,6 +32,7 @@ namespace ScanningAdvanced
 		extern const Symbol UTIL_Remove;
 		extern const Symbol UTIL_PlayerDecalTrace;
 		extern const Symbol CBaseClientState_SetSignonState;
+		extern const Symbol CBaseClientState_Disconnect;
 	}
 	
 	static SymbolFinder symbolfinder;
@@ -91,4 +92,11 @@ namespace ScanningAdvanced
 
 	typedef bool (__thiscall *CBaseClientState_SetSignonState_t)(CBaseClientState* state, int signon_state, int spawn_count);
 	CBaseClientState_SetSignonState_t CBaseClientState_SetSignonState();
+
+	#if defined(SYSTEM_WINDOWS) && defined(ARCHITECTURE_X86)
+	typedef void(__thiscall *CBaseClientState_Disconnect_t)(CBaseClientState* state, const char* reason, bool bShowMainMenu);
+	#elif defined(SYSTEM_WINDOWS) && defined(ARCHITECTURE_X86_64)
+	typedef __int64(__fastcall* CBaseClientState_Disconnect_t)(CBaseClientState* state, const char* reason);
+	#endif
+	CBaseClientState_Disconnect_t CBaseClientState_Disconnect();
 }

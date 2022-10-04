@@ -13,6 +13,7 @@ namespace ScanningAdvanced
 		const Symbol PhysIsInCallback = Symbol::FromSignature("\x8B\x0D\x58\xAF**\x85\xC9\x74*\x8B\x01\x8B\x80\x8C\x00\x00\x00\xFF\xD0\x84\xC0\x75*\x83\x3D\x24***\x00\x7E*\xB0\x01\xC3\x32\xC0\xC3");
 		const Symbol expand_tree = Symbol::FromSignature("\x55\x8B\xEC\x83\xEC\x08\x53\x56\x8B\xF1\x8B\x46\x34\x8B\x40\x10\x57\x89*\xF8\x83\xF8\x28\x7E*\x50\x68\x48***\xE8\x74***\x83\xC4\x08");
 		const Symbol CBaseClientState_SetSignonState = Symbol::FromSignature("\x55\x8B\xEC\x56\x57\x8B\x7D\x08\x8B\xF1\x83\xFF\x07\x77\x1B\x83\xFF\x02");
+		const Symbol CBaseClientState_Disconnect = Symbol::FromSignature("\x55\x8B\xEC\xDD\x05****\x83\xEC\x28\x56\x8B\xF1\x57\x8B\xBE");
 #elif ARCHITECTURE_X86_64
 		const Symbol UTIL_PlayerDecalTrace = Symbol::FromSignature("TODO_TODO_TODO");
 		const Symbol UTIL_Remove = Symbol::FromSignature("\x48\x83\xEC\x28\x48\x85\xC9\x0F\x84****\x48\x89\x5C\x24\x30\x48\x8D\x59\x18\x48\x85\xDB\x74*\x48\x8B\xCB\xE8****\x84\xC0\x75\x67\xE8****");
@@ -22,6 +23,7 @@ namespace ScanningAdvanced
 		const Symbol PhysIsInCallback = Symbol::FromName("?PhysIsInCallback@@YA_NXZ");
 		const Symbol expand_tree = Symbol::FromSignature("TODO_TODO_TODO");
 		const Symbol CBaseClientState_SetSignonState = Symbol::FromSignature("\x48\x89\x5C\x24*\x48\x89\x74\x24*\x57\x48\x83\xEC\x20\x41\x8B\xF0\x8B");
+		const Symbol CBaseClientState_Disconnect = Symbol::FromSignature("\x48\x89\x5C\x24*\x48\x89\x74\x24*\x57\x48\x83\xEC\x60\x48\x8B\x05****\x48\x33");
 #endif
 #elif SYSTEM_LINUX
 #ifdef ARCHITECTURE_X86
@@ -33,6 +35,7 @@ namespace ScanningAdvanced
 		const Symbol PhysIsInCallback = Symbol::FromName("_Z16PhysIsInCallbackv");
 		const Symbol expand_tree = Symbol::FromName("_ZN19IVP_OV_Tree_Manager11expand_treeEPK11IVP_OV_Node");
 		const Symbol CBaseClientState_SetSignonState = Symbol::FromSignature("TODO_TODO_TODO");
+		const Symbol CBaseClientState_Disconnect = Symbol::FromSignature("TODO_TODO_TODO");
 #elif ARCHITECTURE_X86_64
 		const Symbol UTIL_PlayerDecalTrace = Symbol::FromSignature("TODO_TODO_TODO");
 		const Symbol UTIL_Remove = Symbol::FromName("TODO_TODO_TODO");
@@ -42,6 +45,7 @@ namespace ScanningAdvanced
 		const Symbol PhysIsInCallback = Symbol::FromName("TODO_TODO_TODO");
 		const Symbol expand_tree = Symbol::FromName("TODO_TODO_TODO");
 		const Symbol CBaseClientState_SetSignonState = Symbol::FromSignature("TODO_TODO_TODO");
+		const Symbol CBaseClientState_Disconnect = Symbol::FromSignature("TODO_TODO_TODO");
 #endif
 #endif
 	}
@@ -101,5 +105,15 @@ namespace ScanningAdvanced
 		static SourceSDK::FactoryLoader engine_loader("engine_client");
 #endif
 		return SigResolve<CBaseClientState_SetSignonState_t>(engine_loader, Symbols::CBaseClientState_SetSignonState, "CBaseClientState::SetSignonState");
+	}
+
+	CBaseClientState_Disconnect_t CBaseClientState_Disconnect()
+	{
+#if SYSTEM_WINDOWS
+		static SourceSDK::FactoryLoader engine_loader("engine");
+#elif SYSTEM_LINUX
+		static SourceSDK::FactoryLoader engine_loader("engine_client");
+#endif
+		return SigResolve<CBaseClientState_Disconnect_t>(engine_loader, Symbols::CBaseClientState_Disconnect, "CBaseClientState::Disconnect");
 	}
 }
