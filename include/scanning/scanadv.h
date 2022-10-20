@@ -6,6 +6,7 @@
 #include <detouring/hook.hpp>
 
 #include <tier0/dbg.h>
+#include <tier1/netadr.h>
 
 #ifdef ARCHITECTURE_X86
 typedef unsigned long _DWORD;
@@ -20,6 +21,7 @@ class CBaseEntity;
 class CGameTrace;
 class INetworkStringTable;
 class CBaseClientState;
+class CClientState;
 
 namespace ScanningAdvanced
 {
@@ -33,6 +35,7 @@ namespace ScanningAdvanced
 		extern const Symbol UTIL_PlayerDecalTrace;
 		extern const Symbol CBaseClientState_SetSignonState;
 		extern const Symbol CBaseClientState_Disconnect;
+		extern const Symbol CClientState_FullConnect;
 	}
 	
 	static SymbolFinder symbolfinder;
@@ -99,4 +102,8 @@ namespace ScanningAdvanced
 	typedef __int64(__fastcall* CBaseClientState_Disconnect_t)(CBaseClientState* state, const char* reason);
 	#endif
 	CBaseClientState_Disconnect_t CBaseClientState_Disconnect();
+
+	// Its CClientState part, but there CBaseClientState for capability with classproxy
+	typedef void(__thiscall* CClientState_FullConnect_t)(CBaseClientState* state, netadr_t& adr);
+	CClientState_FullConnect_t CClientState_FullConnect();
 }

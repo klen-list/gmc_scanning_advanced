@@ -14,6 +14,7 @@ namespace ScanningAdvanced
 		const Symbol expand_tree = Symbol::FromSignature("\x55\x8B\xEC\x83\xEC\x08\x53\x56\x8B\xF1\x8B\x46\x34\x8B\x40\x10\x57\x89*\xF8\x83\xF8\x28\x7E*\x50\x68\x48***\xE8\x74***\x83\xC4\x08");
 		const Symbol CBaseClientState_SetSignonState = Symbol::FromSignature("\x55\x8B\xEC\x56\x57\x8B\x7D\x08\x8B\xF1\x83\xFF\x07\x77\x1B\x83\xFF\x02");
 		const Symbol CBaseClientState_Disconnect = Symbol::FromSignature("\x55\x8B\xEC\xDD\x05****\x83\xEC\x28\x56\x8B\xF1\x57\x8B\xBE");
+		const Symbol CClientState_FullConnect = Symbol::FromSignature("\x55\x8B\xEC\x53\x8B\x5D\x08\x56\x57\x53\x8B\xF9\xE8****\x8B\x4F\x10");
 #elif ARCHITECTURE_X86_64
 		const Symbol UTIL_PlayerDecalTrace = Symbol::FromSignature("TODO_TODO_TODO");
 		const Symbol UTIL_Remove = Symbol::FromSignature("\x48\x83\xEC\x28\x48\x85\xC9\x0F\x84****\x48\x89\x5C\x24\x30\x48\x8D\x59\x18\x48\x85\xDB\x74*\x48\x8B\xCB\xE8****\x84\xC0\x75\x67\xE8****");
@@ -24,6 +25,7 @@ namespace ScanningAdvanced
 		const Symbol expand_tree = Symbol::FromSignature("TODO_TODO_TODO");
 		const Symbol CBaseClientState_SetSignonState = Symbol::FromSignature("\x48\x89\x5C\x24*\x48\x89\x74\x24*\x57\x48\x83\xEC\x20\x41\x8B\xF0\x8B");
 		const Symbol CBaseClientState_Disconnect = Symbol::FromSignature("\x48\x89\x5C\x24*\x48\x89\x74\x24*\x57\x48\x83\xEC\x60\x48\x8B\x05****\x48\x33");
+		const Symbol CClientState_FullConnect = Symbol::FromSignature("\x48\x89\x5C\x24*\x48\x89\x74\x24*\x57\x48\x83\xEC\x20\x48\x8B\xF2\x48\x8B\xF9\xE8****\x48\x8B\x4F\x20");
 #endif
 #elif SYSTEM_LINUX
 #ifdef ARCHITECTURE_X86
@@ -36,6 +38,7 @@ namespace ScanningAdvanced
 		const Symbol expand_tree = Symbol::FromName("_ZN19IVP_OV_Tree_Manager11expand_treeEPK11IVP_OV_Node");
 		const Symbol CBaseClientState_SetSignonState = Symbol::FromSignature("TODO_TODO_TODO");
 		const Symbol CBaseClientState_Disconnect = Symbol::FromSignature("TODO_TODO_TODO");
+		const Symbol CClientState_FullConnect = Symbol::FromSignature("TODO_TODO_TODO");
 #elif ARCHITECTURE_X86_64
 		const Symbol UTIL_PlayerDecalTrace = Symbol::FromSignature("TODO_TODO_TODO");
 		const Symbol UTIL_Remove = Symbol::FromName("TODO_TODO_TODO");
@@ -46,6 +49,7 @@ namespace ScanningAdvanced
 		const Symbol expand_tree = Symbol::FromName("TODO_TODO_TODO");
 		const Symbol CBaseClientState_SetSignonState = Symbol::FromSignature("TODO_TODO_TODO");
 		const Symbol CBaseClientState_Disconnect = Symbol::FromSignature("TODO_TODO_TODO");
+		const Symbol CClientState_FullConnect = Symbol::FromSignature("TODO_TODO_TODO");
 #endif
 #endif
 	}
@@ -115,5 +119,15 @@ namespace ScanningAdvanced
 		static SourceSDK::FactoryLoader engine_loader("engine_client");
 #endif
 		return SigResolve<CBaseClientState_Disconnect_t>(engine_loader, Symbols::CBaseClientState_Disconnect, "CBaseClientState::Disconnect");
+	}
+
+	CClientState_FullConnect_t CClientState_FullConnect()
+	{
+#if SYSTEM_WINDOWS
+		static SourceSDK::FactoryLoader engine_loader("engine");
+#elif SYSTEM_LINUX
+		static SourceSDK::FactoryLoader engine_loader("engine_client");
+#endif
+		return SigResolve<CClientState_FullConnect_t>(engine_loader, Symbols::CClientState_FullConnect, "CClientState::FullConnect");
 	}
 }
