@@ -15,6 +15,8 @@ namespace ScanningAdvanced
 		const Symbol CBaseClientState_SetSignonState = Symbol::FromSignature("\x55\x8B\xEC\x56\x57\x8B\x7D\x08\x8B\xF1\x83\xFF\x07\x77\x1B\x83\xFF\x02");
 		const Symbol CBaseClientState_Disconnect = Symbol::FromSignature("\x55\x8B\xEC\xDD\x05****\x83\xEC\x28\x56\x8B\xF1\x57\x8B\xBE");
 		const Symbol CClientState_FullConnect = Symbol::FromSignature("\x55\x8B\xEC\x53\x8B\x5D\x08\x56\x57\x53\x8B\xF9\xE8****\x8B\x4F\x10");
+		const Symbol GMEntityByIndex = Symbol::FromSignature("\x55\x8B\xEC\x8B\x45\x08\x85\xC0\x75\x06\x5D\xE9****\x89\x45\x08\x5D\xE9****\xCC");
+
 #elif ARCHITECTURE_X86_64
 		const Symbol UTIL_PlayerDecalTrace = Symbol::FromSignature("TODO_TODO_TODO");
 		const Symbol UTIL_Remove = Symbol::FromSignature("\x48\x83\xEC\x28\x48\x85\xC9\x0F\x84****\x48\x89\x5C\x24\x30\x48\x8D\x59\x18\x48\x85\xDB\x74*\x48\x8B\xCB\xE8****\x84\xC0\x75\x67\xE8****");
@@ -26,6 +28,7 @@ namespace ScanningAdvanced
 		const Symbol CBaseClientState_SetSignonState = Symbol::FromSignature("\x48\x89\x5C\x24*\x48\x89\x74\x24*\x57\x48\x83\xEC\x20\x41\x8B\xF0\x8B");
 		const Symbol CBaseClientState_Disconnect = Symbol::FromSignature("\x48\x89\x5C\x24*\x48\x89\x74\x24*\x57\x48\x83\xEC\x60\x48\x8B\x05****\x48\x33");
 		const Symbol CClientState_FullConnect = Symbol::FromSignature("\x48\x89\x5C\x24*\x48\x89\x74\x24*\x57\x48\x83\xEC\x20\x48\x8B\xF2\x48\x8B\xF9\xE8****\x48\x8B\x4F\x20");
+		const Symbol GMEntityByIndex = Symbol::FromSignature("\x85\xC9\x0F\x84****\xE9****\xCC");
 #endif
 #elif SYSTEM_LINUX
 #ifdef ARCHITECTURE_X86
@@ -39,6 +42,7 @@ namespace ScanningAdvanced
 		const Symbol CBaseClientState_SetSignonState = Symbol::FromSignature("TODO_TODO_TODO");
 		const Symbol CBaseClientState_Disconnect = Symbol::FromSignature("TODO_TODO_TODO");
 		const Symbol CClientState_FullConnect = Symbol::FromSignature("TODO_TODO_TODO");
+		const Symbol GMEntityByIndex = Symbol::FromName("_Z15GMEntityByIndexi");
 #elif ARCHITECTURE_X86_64
 		const Symbol UTIL_PlayerDecalTrace = Symbol::FromSignature("TODO_TODO_TODO");
 		const Symbol UTIL_Remove = Symbol::FromName("TODO_TODO_TODO");
@@ -50,6 +54,7 @@ namespace ScanningAdvanced
 		const Symbol CBaseClientState_SetSignonState = Symbol::FromSignature("TODO_TODO_TODO");
 		const Symbol CBaseClientState_Disconnect = Symbol::FromSignature("TODO_TODO_TODO");
 		const Symbol CClientState_FullConnect = Symbol::FromSignature("TODO_TODO_TODO");
+		const Symbol GMEntityByIndex = Symbol::FromSignature("\x55\x85\xFF\x48\x89\xE5\x74\x08\x5D\xE9****\x66\x90\x5D\xE9****");
 #endif
 #endif
 	}
@@ -129,5 +134,11 @@ namespace ScanningAdvanced
 		static SourceSDK::FactoryLoader engine_loader("engine_client");
 #endif
 		return SigResolve<CClientState_FullConnect_t>(engine_loader, Symbols::CClientState_FullConnect, "CClientState::FullConnect");
+	}
+
+	GMEntityByIndex_t GMEntityByIndex()
+	{
+		static SourceSDK::FactoryLoader server_loader("server");
+		return SigResolve<GMEntityByIndex_t>(server_loader, Symbols::GMEntityByIndex, "GMEntityByIndex");
 	}
 }
