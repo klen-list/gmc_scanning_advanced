@@ -92,10 +92,10 @@ namespace ScanningAdvanced
 	typedef bool (__thiscall *CBaseClientState_SetSignonState_t)(CBaseClientState* state, int signon_state, int spawn_count);
 	CBaseClientState_SetSignonState_t CBaseClientState_SetSignonState();
 
-#if defined(SYSTEM_WINDOWS) && defined(ARCHITECTURE_X86)
-	typedef void(__thiscall *CBaseClientState_Disconnect_t)(CBaseClientState* state, const char* reason, bool bShowMainMenu);
-#elif defined(SYSTEM_WINDOWS) && defined(ARCHITECTURE_X86_64)
+#if defined(SYSTEM_WINDOWS) && defined(ARCHITECTURE_X86_64)
 	typedef __int64(__fastcall *CBaseClientState_Disconnect_t)(CBaseClientState* state, const char* reason);
+#else 
+	typedef void(__thiscall *CBaseClientState_Disconnect_t)(CBaseClientState* state, const char* reason, bool bShowMainMenu);
 #endif
 	CBaseClientState_Disconnect_t CBaseClientState_Disconnect();
 
