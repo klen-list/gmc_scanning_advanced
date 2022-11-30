@@ -5,7 +5,6 @@ namespace ScanningAdvanced
 	namespace Symbols {
 #ifdef SYSTEM_WINDOWS
 #ifdef ARCHITECTURE_X86
-		const Symbol UTIL_PlayerDecalTrace = Symbol::FromSignature("\x55\x8B\xEC\x83\xEC\x20\x56\x8B\x75\x08\xF3\x0F\x10\x46\x2C\x0F\x2E\x05****\x9F\xF6\xC4\x44\x7B\x4E\x8D\x4D\xE0\xE8****\x8D\x4D");
 		const Symbol UTIL_Remove = Symbol::FromSignature("TODO_TODO_TODO");
 		const Symbol CCollisionEvent_ShouldFreezeContacts = Symbol::FromSignature("\x55\x8B\xEC\x8B\x15\x58\x2C**\x56\x8B\xF1\x8B\x42\x18\x8B\x8E\x5C\x01\x00\x00\x3B\xC8\x7F*\x48\x3B\xC8\x7D*");
 		const Symbol PhysicsGameSystem = Symbol::FromSignature("\xB8\x30\xC7**\xC3");
@@ -18,7 +17,6 @@ namespace ScanningAdvanced
 		const Symbol GMEntityByIndex = Symbol::FromSignature("\x55\x8B\xEC\x8B\x45\x08\x85\xC0\x75\x06\x5D\xE9****\x89\x45\x08\x5D\xE9****\xCC");
 
 #elif ARCHITECTURE_X86_64
-		const Symbol UTIL_PlayerDecalTrace = Symbol::FromSignature("TODO_TODO_TODO");
 		const Symbol UTIL_Remove = Symbol::FromSignature("\x48\x83\xEC\x28\x48\x85\xC9\x0F\x84****\x48\x89\x5C\x24\x30\x48\x8D\x59\x18\x48\x85\xDB\x74*\x48\x8B\xCB\xE8****\x84\xC0\x75\x67\xE8****");
 		const Symbol CCollisionEvent_ShouldFreezeContacts = Symbol::FromSignature("\x40\x53\x48\x83\xEC\x20\x48\x8B\x15****\x48\x8B\xD9\x8B\x89\x04\x02\x00\x00\x8B\x42\x18\x3B\xC8\x7F*\xFF\xC8\x3B\xC8\x7D*");
 		const Symbol PhysicsGameSystem = Symbol::FromSignature("TODO_TODO_TODO");
@@ -32,7 +30,6 @@ namespace ScanningAdvanced
 #endif
 #elif SYSTEM_LINUX
 #ifdef ARCHITECTURE_X86
-		const Symbol UTIL_PlayerDecalTrace = Symbol::FromName("_Z21UTIL_PlayerDecalTraceP10CGameTracei");
 		const Symbol UTIL_Remove = Symbol::FromName("_Z11UTIL_RemoveP11CBaseEntity");
 		const Symbol CCollisionEvent_ShouldFreezeContacts = Symbol::FromName("_ZN15CCollisionEvent20ShouldFreezeContactsEPP14IPhysicsObjecti");
 		const Symbol PhysicsGameSystem = Symbol::FromName("_Z17PhysicsGameSystemv");
@@ -44,7 +41,6 @@ namespace ScanningAdvanced
 		const Symbol CClientState_FullConnect = Symbol::FromSignature("TODO_TODO_TODO");
 		const Symbol GMEntityByIndex = Symbol::FromName("_Z15GMEntityByIndexi");
 #elif ARCHITECTURE_X86_64
-		const Symbol UTIL_PlayerDecalTrace = Symbol::FromSignature("TODO_TODO_TODO");
 		const Symbol UTIL_Remove = Symbol::FromName("TODO_TODO_TODO");
 		const Symbol CCollisionEvent_ShouldFreezeContacts = Symbol::FromName("TODO_TODO_TODO");
 		const Symbol PhysicsGameSystem = Symbol::FromName("TODO_TODO_TODO");
@@ -87,12 +83,6 @@ namespace ScanningAdvanced
 	{
 		static SourceSDK::FactoryLoader server_loader("server");
 		return SigResolve<UTIL_Remove_t>(server_loader, Symbols::UTIL_Remove, "UTIL_Remove");
-	}
-
-	UTIL_PlayerDecalTrace_t UTIL_PlayerDecalTrace()
-	{
-		static SourceSDK::FactoryLoader server_loader("server");
-		return SigResolve<UTIL_PlayerDecalTrace_t>(server_loader, Symbols::UTIL_PlayerDecalTrace, "UTIL_PlayerDecalTrace");
 	}
 
 	expand_tree_t expand_tree()

@@ -18,7 +18,6 @@ class CPhysicsHook;
 class CCollisionEvent;
 class IPhysicsObject;
 class CBaseEntity;
-class CGameTrace;
 class INetworkStringTable;
 class CBaseClientState;
 class CClientState;
@@ -32,7 +31,6 @@ namespace ScanningAdvanced
 		extern const Symbol expand_tree;
 		extern const Symbol CCollisionEvent_ShouldFreezeContacts;
 		extern const Symbol UTIL_Remove;
-		extern const Symbol UTIL_PlayerDecalTrace;
 		extern const Symbol CBaseClientState_SetSignonState;
 		extern const Symbol CBaseClientState_Disconnect;
 		extern const Symbol CClientState_FullConnect;
@@ -90,9 +88,6 @@ namespace ScanningAdvanced
 
 	typedef void (*UTIL_Remove_t)(CBaseEntity* pEnt);
 	UTIL_Remove_t UTIL_Remove();
-
-	typedef void (*UTIL_PlayerDecalTrace_t)(CGameTrace* pTrace, int playernum);
-	UTIL_PlayerDecalTrace_t UTIL_PlayerDecalTrace();
 
 	typedef bool (__thiscall *CBaseClientState_SetSignonState_t)(CBaseClientState* state, int signon_state, int spawn_count);
 	CBaseClientState_SetSignonState_t CBaseClientState_SetSignonState();
