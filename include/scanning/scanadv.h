@@ -18,9 +18,11 @@ class CPhysicsHook;
 class CCollisionEvent;
 class IPhysicsObject;
 class CBaseEntity;
+class CBaseClient;
 class INetworkStringTable;
 class CBaseClientState;
 class CClientState;
+class NET_StringCmd;
 
 namespace ScanningAdvanced
 {
@@ -35,6 +37,7 @@ namespace ScanningAdvanced
 		extern const Symbol CBaseClientState_Disconnect;
 		extern const Symbol CClientState_FullConnect;
 		extern const Symbol GMEntityByIndex;
+		extern const Symbol CBaseClient_ProcessStringCmd;
 	}
 	
 	static SymbolFinder symbolfinder;
@@ -105,10 +108,19 @@ namespace ScanningAdvanced
 
 	typedef CBaseEntity*
 #if defined(SYSTEM_WINDOWS) && defined(ARCHITECTURE_X86_64)
-		(__fastcall
+	(__fastcall
 #else
-		(__cdecl
+	(__cdecl
 #endif
-		*GMEntityByIndex_t)(int32 index);
+	*GMEntityByIndex_t)(int32 index);
 	GMEntityByIndex_t GMEntityByIndex();
+
+	typedef bool
+#if defined (SYSTEM_WINDOWS) && defined(ARCHITECTURE_X86)
+	(__thiscall
+#else
+	(__cdecl
+#endif
+	*CBaseClient_ProcessStringCmd_t)(CBaseClient* client, uintptr_t* cmd);
+	CBaseClient_ProcessStringCmd_t CBaseClient_ProcessStringCmd();
 }
