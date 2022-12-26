@@ -42,7 +42,7 @@ namespace ScanningAdvanced
 		const Symbol CBaseClientState_Disconnect = Symbol::FromSignature("TODO_TODO_TODO");
 		const Symbol CClientState_FullConnect = Symbol::FromSignature("TODO_TODO_TODO");
 		const Symbol GMEntityByIndex = Symbol::FromName("_Z15GMEntityByIndexi");
-		const Symbol CBaseClient_ProcessStringCmd = Symbol::FromSignature("_ZN11CBaseClient16ProcessStringCmdEP13NET_StringCmd");
+		const Symbol CBaseClient_ProcessStringCmd = Symbol::FromName("_ZN11CBaseClient16ProcessStringCmdEP13NET_StringCmd");
 #elif ARCHITECTURE_X86_64
 		const Symbol UTIL_Remove = Symbol::FromName("TODO_TODO_TODO");
 		const Symbol CCollisionEvent_ShouldFreezeContacts = Symbol::FromName("TODO_TODO_TODO");
