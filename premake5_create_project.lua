@@ -5,7 +5,6 @@ group "garrysmod_common"
 		targetdir "%{prj.location}/%{cfg.architecture}/%{cfg.buildcfg}"
 		debugdir "%{prj.location}/%{cfg.architecture}/%{cfg.buildcfg}"
 		objdir "!%{prj.location}/%{cfg.architecture}/%{cfg.buildcfg}/intermediate/%{prj.name}"
-		defines "IS_SERVERSIDE=true"
 		includedirs {"include", _GARRYSMOD_COMMON_DIRECTORY .. "/include"}
 		
 		files {
@@ -20,7 +19,6 @@ group "garrysmod_common"
 
 		filter "system:linux or macosx"
 			links "dl"
-
 		
 		IncludeHelpers()
 		IncludeHelpersExtended()
