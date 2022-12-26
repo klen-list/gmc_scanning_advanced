@@ -62,10 +62,12 @@ namespace ScanningAdvanced
 	static inline void FastDetour(Detouring::Hook& detour, T original, void* hook, const char* name)
 	{
 		if (original)
+		{
 			if (!detour.Create(Detouring::Hook::Target(reinterpret_cast<void*>(original)), hook))
 				Warning("Unable to detour %s!\n", name);
 			else
 				detour.Enable();
+		}
 	}
 
 	typedef CPhysicsHook* (*PhysicsGameSystem_t)();
