@@ -93,6 +93,8 @@ namespace ScanningAdvanced
 
 	typedef void (*UTIL_Remove_t)(CBaseEntity* pEnt);
 	UTIL_Remove_t UTIL_Remove();
+	
+#ifdef SYSTEM_WINDOWS
 
 	typedef bool (__thiscall *CBaseClientState_SetSignonState_t)(CBaseClientState* state, int signon_state, int spawn_count);
 	CBaseClientState_SetSignonState_t CBaseClientState_SetSignonState();
@@ -107,6 +109,15 @@ namespace ScanningAdvanced
 	// Its CClientState part, but there CBaseClientState for capability with classproxy
 	typedef void(__thiscall *CClientState_FullConnect_t)(CBaseClientState* state, netadr_t& adr);
 	CClientState_FullConnect_t CClientState_FullConnect();
+	
+#else
+	
+	// Dummy define for linux that didnt have __thiscall
+	typedef void (*CBaseClientState_SetSignonState_t)(void);
+	typedef void (*CBaseClientState_Disconnect_t)(void);
+	typedef void (*CClientState_FullConnect_t)(void);
+	
+#endif
 
 	typedef CBaseEntity*
 #if defined(SYSTEM_WINDOWS) && defined(ARCHITECTURE_X86_64)
