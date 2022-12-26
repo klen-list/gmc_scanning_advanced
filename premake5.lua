@@ -9,7 +9,7 @@ function IncludeScanningAdvanced()
 	local _project = project()
 
 	externalincludedirs(current_dir .. "/include")
-	links {"helpers_extended", "helpers", "scanning", "scanning-advanced"}
+	links {"scanning-advanced", "helpers_extended", "helpers", "scanning"}
 
 	if refcount == 1 then
 		dofile(current_dir .. "/premake5_create_project.lua")
