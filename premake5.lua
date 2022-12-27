@@ -7,8 +7,10 @@ function IncludeScanningAdvanced()
 	end
 
 	local _project = project()
-
-	externalincludedirs(current_dir .. "/include")
+	
+	local incld = externalincludedirs or sysincludedirs
+	incld(current_dir .. "/include")
+	
 	links {"scanning-advanced", "helpers_extended", "helpers", "scanning"}
 
 	if refcount == 1 then
