@@ -23,6 +23,9 @@ class INetworkStringTable;
 class CBaseClientState;
 class CClientState;
 class NET_StringCmd;
+class CMultiplayRules;
+class KeyValues;
+struct edict_t;
 
 namespace ScanningAdvanced
 {
@@ -38,6 +41,7 @@ namespace ScanningAdvanced
 		extern const Symbol CClientState_FullConnect;
 		extern const Symbol GMEntityByIndex;
 		extern const Symbol CBaseClient_ProcessStringCmd;
+		extern const Symbol CMultiplayRules_ClientCommandKeyValues;
 	}
 	
 	static SymbolFinder symbolfinder;
@@ -136,4 +140,7 @@ namespace ScanningAdvanced
 #endif
 	*CBaseClient_ProcessStringCmd_t)(CBaseClient* client, uintptr_t* cmd);
 	CBaseClient_ProcessStringCmd_t CBaseClient_ProcessStringCmd();
+
+	typedef char* (__cdecl *CMultiplayRules_ClientCommandKeyValues_t)(CMultiplayRules* pMPRules, edict_t* pEntity, KeyValues* pKeyValues);
+	CMultiplayRules_ClientCommandKeyValues_t CMultiplayRules_ClientCommandKeyValues();
 }

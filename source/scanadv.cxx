@@ -16,7 +16,7 @@ namespace ScanningAdvanced
 		const Symbol CClientState_FullConnect = Symbol::FromSignature("\x55\x8B\xEC\x53\x8B\x5D\x08\x56\x57\x53\x8B\xF9\xE8****\x8B\x4F\x10");
 		const Symbol GMEntityByIndex = Symbol::FromSignature("\x55\x8B\xEC\x8B\x45\x08\x85\xC0\x75\x06\x5D\xE9****\x89\x45\x08\x5D\xE9****\xCC");
 		const Symbol CBaseClient_ProcessStringCmd = Symbol::FromSignature("\x55\x8B\xEC\x8B\x45\x08\x83\xC1\xFC");
-
+		const Symbol CMultiplayRules_ClientCommandKeyValues = Symbol::FromSignature("TODO_TODO_TODO");
 #elif ARCHITECTURE_X86_64
 		const Symbol UTIL_Remove = Symbol::FromSignature("\x48\x83\xEC\x28\x48\x85\xC9\x0F\x84****\x48\x89\x5C\x24\x30\x48\x8D\x59\x18\x48\x85\xDB\x74*\x48\x8B\xCB\xE8****\x84\xC0\x75\x67\xE8****");
 		const Symbol CCollisionEvent_ShouldFreezeContacts = Symbol::FromSignature("\x40\x53\x48\x83\xEC\x20\x48\x8B\x15****\x48\x8B\xD9\x8B\x89\x04\x02\x00\x00\x8B\x42\x18\x3B\xC8\x7F*\xFF\xC8\x3B\xC8\x7D*");
@@ -29,6 +29,7 @@ namespace ScanningAdvanced
 		const Symbol CClientState_FullConnect = Symbol::FromSignature("\x48\x89\x5C\x24*\x48\x89\x74\x24*\x57\x48\x83\xEC\x20\x48\x8B\xF2\x48\x8B\xF9\xE8****\x48\x8B\x4F\x20");
 		const Symbol GMEntityByIndex = Symbol::FromSignature("\x85\xC9\x0F\x84****\xE9****\xCC");
 		const Symbol CBaseClient_ProcessStringCmd = Symbol::FromSignature("TODO_TODO_TODO");
+		const Symbol CMultiplayRules_ClientCommandKeyValues = Symbol::FromSignature("TODO_TODO_TODO");
 #endif
 #elif SYSTEM_LINUX
 #ifdef ARCHITECTURE_X86
@@ -43,6 +44,7 @@ namespace ScanningAdvanced
 		const Symbol CClientState_FullConnect = Symbol::FromSignature("TODO_TODO_TODO");
 		const Symbol GMEntityByIndex = Symbol::FromName("_Z15GMEntityByIndexi");
 		const Symbol CBaseClient_ProcessStringCmd = Symbol::FromName("_ZN11CBaseClient16ProcessStringCmdEP13NET_StringCmd");
+		const Symbol CMultiplayRules_ClientCommandKeyValues = Symbol::FromName("_ZN15CMultiplayRules22ClientCommandKeyValuesEP7edict_tP9KeyValues");
 #elif ARCHITECTURE_X86_64
 		const Symbol UTIL_Remove = Symbol::FromName("TODO_TODO_TODO");
 		const Symbol CCollisionEvent_ShouldFreezeContacts = Symbol::FromName("TODO_TODO_TODO");
@@ -55,6 +57,7 @@ namespace ScanningAdvanced
 		const Symbol CClientState_FullConnect = Symbol::FromSignature("TODO_TODO_TODO");
 		const Symbol GMEntityByIndex = Symbol::FromSignature("\x55\x85\xFF\x48\x89\xE5\x74\x08\x5D\xE9****\x66\x90\x5D\xE9****");
 		const Symbol CBaseClient_ProcessStringCmd = Symbol::FromSignature("TODO_TODO_TODO");
+		const Symbol CMultiplayRules_ClientCommandKeyValues = Symbol::FromSignature("TODO_TODO_TODO");
 #endif
 #endif
 	}
@@ -140,5 +143,11 @@ namespace ScanningAdvanced
 	{
 		static SourceSDK::FactoryLoader engine_loader("engine");
 		return SigResolve<CBaseClient_ProcessStringCmd_t>(engine_loader, Symbols::CBaseClient_ProcessStringCmd, "CBaseClient::ProcessStringCmd");
+	}
+
+	CMultiplayRules_ClientCommandKeyValues_t CMultiplayRules_ClientCommandKeyValues()
+	{
+		static SourceSDK::FactoryLoader server_loader("server");
+		return SigResolve<CMultiplayRules_ClientCommandKeyValues_t>(server_loader, Symbols::CMultiplayRules_ClientCommandKeyValues, "CMultiplayRules::ClientCommandKeyValues");
 	}
 }
