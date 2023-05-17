@@ -87,7 +87,7 @@ namespace ScanningAdvanced {
 		}
 
 	private:
-		// Dirty hack to catch SharedState while waiting methods form danielga
+		// Dirty hack to catch SharedState while waiting methods from danielga
 		void InitHookAccessor()
 		{
 			bool (*InitializeFunc)(Target*, Substitute*) = &ClassProxyAdv::Initialize;
@@ -97,8 +97,8 @@ namespace ScanningAdvanced {
 			if (*reinterpret_cast<uint8_t*>(ptr) != 0xE9)
 				return;
 
-			uint32_t offset = *reinterpret_cast<int32_t*>(ptr + 1);
-			ptr += static_cast<int32_t>(offset) + 5;
+			uint32_t jmp_offset = *reinterpret_cast<int32_t*>(ptr + 1);
+			ptr += static_cast<int32_t>(jmp_offset) + 5;
 
 			// search for first CALL (GetSharedState)
 			for (uint8_t offset = 0; offset < 64; offset++)
