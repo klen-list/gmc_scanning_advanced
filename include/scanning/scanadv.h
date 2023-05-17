@@ -8,24 +8,30 @@
 #include <tier0/dbg.h>
 #include <tier1/netadr.h>
 
-#ifdef ARCHITECTURE_X86
-typedef unsigned long _DWORD;
-#elif ARCHITECTURE_X86_64
-typedef unsigned long long _DWORD;
-#endif
-
 class CPhysicsHook;
 class CCollisionEvent;
 class IPhysicsObject;
 class CBaseEntity;
 class CBaseClient;
-class INetworkStringTable;
-class CBaseClientState;
-class CClientState;
-class NET_StringCmd;
 class CMultiplayRules;
 class KeyValues;
 struct edict_t;
+
+#ifdef SYSTEM_WINDOWS
+	#define TYPEDIFF_WIN(win, other) win
+
+	#ifdef ARCHITECTURE_X86
+		#define TYPEDIFF_WIN86(win, other) win
+		#define TYPEDIFF_WIN64(win, other) other
+	#elif ARCHITECTURE_X86_64
+		#define TYPEDIFF_WIN86(win, other) other
+		#define TYPEDIFF_WIN64(win, other) win
+	#endif
+#else
+	#define TYPEDIFF_WIN(win, other) other
+	#define TYPEDIFF_WIN86(win, other) other
+	#define TYPEDIFF_WIN64(win, other) other
+#endif
 
 namespace ScanningAdvanced
 {
@@ -36,12 +42,11 @@ namespace ScanningAdvanced
 		extern const Symbol expand_tree;
 		extern const Symbol CCollisionEvent_ShouldFreezeContacts;
 		extern const Symbol UTIL_Remove;
-		extern const Symbol CBaseClientState_SetSignonState;
-		extern const Symbol CBaseClientState_Disconnect;
-		extern const Symbol CClientState_FullConnect;
 		extern const Symbol GMEntityByIndex;
 		extern const Symbol CBaseClient_ProcessStringCmd;
 		extern const Symbol CMultiplayRules_ClientCommandKeyValues;
+		extern const Symbol GModDataPack_GetHashFromDatatable;
+		extern const Symbol PhysFrame;
 	}
 	
 	static SymbolFinder symbolfinder;
@@ -55,7 +60,7 @@ namespace ScanningAdvanced
 
 		if (!original)
 		{
-			Warning("%s: Detour failed: Signature not found\n", name);
+			Warning("%s: Signature not found\n", name);
 			return nullptr;
 		}
 
@@ -68,7 +73,7 @@ namespace ScanningAdvanced
 		if (original)
 		{
 			if (!detour.Create(Detouring::Hook::Target(reinterpret_cast<void*>(original)), hook))
-				Warning("Unable to detour %s!\n", name);
+				Warning("%s: Unable to detour!\n", name);
 			else
 				detour.Enable();
 		}
@@ -83,13 +88,13 @@ namespace ScanningAdvanced
 	typedef bool (*PhysIsInCallback_t)();
 	PhysIsInCallback_t PhysIsInCallback();
 
-	typedef void (*expand_tree_t)(_DWORD pTree, _DWORD howmuch);
+	typedef void (*expand_tree_t)(uintptr_t pTree, uintptr_t howmuch);
 	expand_tree_t expand_tree();
 
 #if defined(SYSTEM_WINDOWS) && defined(ARCHITECTURE_X86)
-	// IPhysicsObject** missing at this game version
+	// TODO: Add callconv and check for missing IPhysicsObject**
 	typedef bool (*CCollisionEvent_ShouldFreezeContacts_t)(CCollisionEvent* pEvent, int objC);
-	__declspec(deprecated("Detouring this cause vphysics crash at Windows x86!")) CCollisionEvent_ShouldFreezeContacts_t CCollisionEvent_ShouldFreezeContacts();
+	__declspec(deprecated("TODO: Fixme")) CCollisionEvent_ShouldFreezeContacts_t CCollisionEvent_ShouldFreezeContacts();
 #else
 	typedef bool (*CCollisionEvent_ShouldFreezeContacts_t)(CCollisionEvent* pEvent, IPhysicsObject** pObjList, int objC);
 	CCollisionEvent_ShouldFreezeContacts_t CCollisionEvent_ShouldFreezeContacts();
@@ -98,49 +103,21 @@ namespace ScanningAdvanced
 	typedef void (*UTIL_Remove_t)(CBaseEntity* pEnt);
 	UTIL_Remove_t UTIL_Remove();
 	
-#ifdef SYSTEM_WINDOWS
-
-	typedef bool (__thiscall *CBaseClientState_SetSignonState_t)(CBaseClientState* state, int signon_state, int spawn_count);
-	CBaseClientState_SetSignonState_t CBaseClientState_SetSignonState();
-
-#if defined(SYSTEM_WINDOWS) && defined(ARCHITECTURE_X86_64)
-	typedef __int64(__fastcall *CBaseClientState_Disconnect_t)(CBaseClientState* state, const char* reason);
-#else 
-	typedef void(__thiscall *CBaseClientState_Disconnect_t)(CBaseClientState* state, const char* reason, bool bShowMainMenu);
-#endif
-	CBaseClientState_Disconnect_t CBaseClientState_Disconnect();
-
-	// Its CClientState part, but there CBaseClientState for capability with classproxy
-	typedef void(__thiscall *CClientState_FullConnect_t)(CBaseClientState* state, netadr_t& adr);
-	CClientState_FullConnect_t CClientState_FullConnect();
-	
-#else
-	
-	// Dummy define for linux that didnt have __thiscall
-	typedef void (*CBaseClientState_SetSignonState_t)(void);
-	typedef void (*CBaseClientState_Disconnect_t)(void);
-	typedef void (*CClientState_FullConnect_t)(void);
-	
-#endif
-
-	typedef CBaseEntity*
-#if defined(SYSTEM_WINDOWS) && defined(ARCHITECTURE_X86_64)
-	(__fastcall
-#else
-	(__cdecl
-#endif
-	*GMEntityByIndex_t)(int32 index);
+	typedef CBaseEntity* (TYPEDIFF_WIN64(__fastcall, __cdecl) *GMEntityByIndex_t)(int32 index);
 	GMEntityByIndex_t GMEntityByIndex();
 
-	typedef bool
-#if defined (SYSTEM_WINDOWS) && defined(ARCHITECTURE_X86)
-	(__thiscall
-#else
-	(__cdecl
-#endif
-	*CBaseClient_ProcessStringCmd_t)(CBaseClient* client, uintptr_t* cmd);
+	typedef bool (TYPEDIFF_WIN86(__thiscall, __cdecl) *CBaseClient_ProcessStringCmd_t)(CBaseClient* client, uintptr_t* cmd);
 	CBaseClient_ProcessStringCmd_t CBaseClient_ProcessStringCmd();
 
 	typedef char* (__cdecl *CMultiplayRules_ClientCommandKeyValues_t)(CMultiplayRules* pMPRules, edict_t* pEntity, KeyValues* pKeyValues);
 	CMultiplayRules_ClientCommandKeyValues_t CMultiplayRules_ClientCommandKeyValues();
+	
+	typedef TYPEDIFF_WIN(void, int) (__cdecl* GModAutoRefresh_HandleLuaFileChange_t)(void*);
+	GModAutoRefresh_HandleLuaFileChange_t GModAutoRefresh_HandleLuaFileChange();
+	
+	typedef void* (__stdcall* GModDataPack_GetHashFromDatatable_t)(void*, std::string const&, std::string);
+	GModDataPack_GetHashFromDatatable_t GModDataPack_GetHashFromDatatable();
+
+	typedef TYPEDIFF_WIN(void, unsigned int) (__cdecl* PhysFrame_t)(float);
+	PhysFrame_t PhysFrame();
 }
