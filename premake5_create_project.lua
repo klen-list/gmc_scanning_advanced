@@ -8,8 +8,8 @@ group "garrysmod_common"
 		includedirs {"include", _GARRYSMOD_COMMON_DIRECTORY .. "/include"}
 		
 		files {
-			"include/scanning/scanadv.h",
-			"source/scanadv.cxx"
+			"include/scanning/*.h",
+			"source/*.cxx"
 		}
 		
 		vpaths {
