@@ -13,24 +13,18 @@ class CCollisionEvent;
 class IPhysicsObject;
 class CBaseEntity;
 class CBaseClient;
-class CMultiplayRules;
-class KeyValues;
-struct edict_t;
+class CObjectPairHash;
 
 #ifdef SYSTEM_WINDOWS
-	#define TYPEDIFF_WIN(win, other) win
-
-	#ifdef ARCHITECTURE_X86
-		#define TYPEDIFF_WIN86(win, other) win
-		#define TYPEDIFF_WIN64(win, other) other
-	#elif ARCHITECTURE_X86_64
-		#define TYPEDIFF_WIN86(win, other) other
-		#define TYPEDIFF_WIN64(win, other) win
-	#endif
+	#define DIFF_WINUNIX(win, unix) win
+	#define SYM Symbol::FromSignature
+	#define DEFSYM(win, unix) SYM(win)
+#elif SYSTEM_LINUX
+	#define DIFF_WINUNIX(win, unix) unix
+	#define SYM Symbol::FromName
+	#define DEFSYM(win, unix) SYM(unix)
 #else
-	#define TYPEDIFF_WIN(win, other) other
-	#define TYPEDIFF_WIN86(win, other) other
-	#define TYPEDIFF_WIN64(win, other) other
+	#error Unsupported platform!
 #endif
 
 namespace ScanningAdvanced
@@ -44,9 +38,15 @@ namespace ScanningAdvanced
 		extern const Symbol UTIL_Remove;
 		extern const Symbol GMEntityByIndex;
 		extern const Symbol CBaseClient_ProcessStringCmd;
-		extern const Symbol CMultiplayRules_ClientCommandKeyValues;
-		extern const Symbol GModDataPack_GetHashFromDatatable;
+		extern const Symbol GModAutoRefresh_HandleLuaFileChange;
 		extern const Symbol PhysFrame;
+		extern const Symbol CObjectPairHash_RemoveAllPairsForObject;
+	}
+
+	namespace Loaders {
+		static SourceSDK::FactoryLoader Server("server");
+		static SourceSDK::FactoryLoader VPhysic("vphysics");
+		static SourceSDK::FactoryLoader Engine("engine");
 	}
 	
 	static SymbolFinder symbolfinder;
@@ -88,36 +88,27 @@ namespace ScanningAdvanced
 	typedef bool (*PhysIsInCallback_t)();
 	PhysIsInCallback_t PhysIsInCallback();
 
-	typedef void (*expand_tree_t)(uintptr_t pTree, uintptr_t howmuch);
+	typedef void (DIFF_WINUNIX(__thiscall, __cdecl)* expand_tree_t)(uintptr_t pTree, uintptr_t howmuch);
 	expand_tree_t expand_tree();
 
-#if defined(SYSTEM_WINDOWS) && defined(ARCHITECTURE_X86)
-	// TODO: Add callconv and check for missing IPhysicsObject**
-	typedef bool (*CCollisionEvent_ShouldFreezeContacts_t)(CCollisionEvent* pEvent, int objC);
-	__declspec(deprecated("TODO: Fixme")) CCollisionEvent_ShouldFreezeContacts_t CCollisionEvent_ShouldFreezeContacts();
-#else
-	typedef bool (*CCollisionEvent_ShouldFreezeContacts_t)(CCollisionEvent* pEvent, IPhysicsObject** pObjList, int objC);
+	typedef bool (DIFF_WINUNIX(__thiscall, __cdecl)* CCollisionEvent_ShouldFreezeContacts_t)(CCollisionEvent* pEvent, IPhysicsObject** pObjList, int objC);
 	CCollisionEvent_ShouldFreezeContacts_t CCollisionEvent_ShouldFreezeContacts();
-#endif
 
-	typedef void (*UTIL_Remove_t)(CBaseEntity* pEnt);
+	typedef void (__cdecl* UTIL_Remove_t)(CBaseEntity* pEnt);
 	UTIL_Remove_t UTIL_Remove();
 	
-	typedef CBaseEntity* (TYPEDIFF_WIN64(__fastcall, __cdecl) *GMEntityByIndex_t)(int32 index);
+	typedef CBaseEntity* (__cdecl* GMEntityByIndex_t)(int32_t index);
 	GMEntityByIndex_t GMEntityByIndex();
 
-	typedef bool (TYPEDIFF_WIN86(__thiscall, __cdecl) *CBaseClient_ProcessStringCmd_t)(CBaseClient* client, uintptr_t* cmd);
+	typedef bool (DIFF_WINUNIX(__thiscall, __cdecl)* CBaseClient_ProcessStringCmd_t)(CBaseClient* client, uintptr_t* cmd);
 	CBaseClient_ProcessStringCmd_t CBaseClient_ProcessStringCmd();
-
-	typedef char* (__cdecl *CMultiplayRules_ClientCommandKeyValues_t)(CMultiplayRules* pMPRules, edict_t* pEntity, KeyValues* pKeyValues);
-	CMultiplayRules_ClientCommandKeyValues_t CMultiplayRules_ClientCommandKeyValues();
 	
-	typedef TYPEDIFF_WIN(void, int) (__cdecl* GModAutoRefresh_HandleLuaFileChange_t)(void*);
+	typedef void (__cdecl* GModAutoRefresh_HandleLuaFileChange_t)(const std::string &file);
 	GModAutoRefresh_HandleLuaFileChange_t GModAutoRefresh_HandleLuaFileChange();
-	
-	typedef void* (__stdcall* GModDataPack_GetHashFromDatatable_t)(void*, std::string const&, std::string);
-	GModDataPack_GetHashFromDatatable_t GModDataPack_GetHashFromDatatable();
 
-	typedef TYPEDIFF_WIN(void, unsigned int) (__cdecl* PhysFrame_t)(float);
+	typedef void (__cdecl* PhysFrame_t)(float deltaTime);
 	PhysFrame_t PhysFrame();
+
+	typedef int(__cdecl* CObjectPairHash_RemoveAllPairsForObject_t)(CObjectPairHash* hash, void* pObject);
+	CObjectPairHash_RemoveAllPairsForObject_t CObjectPairHash_RemoveAllPairsForObject();
 }

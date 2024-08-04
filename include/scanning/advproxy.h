@@ -6,7 +6,6 @@
 #endif
 
 #include <detouring/classproxy.hpp>
-#include <functional>
 
 struct _VTable
 {
@@ -44,15 +43,21 @@ namespace ScanningAdvanced {
 		virtual ~ClassProxyAdv() = default;
 
 	public:
+		func_GetSharedState GetSharedState = [](bool) { return nullptr; }
+
 		template<typename Definition>
 		bool EnableHook(Definition original)
 		{
+			const auto shared_state = GetSharedState();
+			if (!shared_state)
+				return false;
+
 			void* address = reinterpret_cast<void*>(original);
 			if (address == nullptr)
 				return false;
 
-			const auto it = adv_shared_state->hooks.find(address);
-			if (it != adv_shared_state->hooks.end())
+			const auto it = shared_state->hooks.find(address);
+			if (it != shared_state->hooks.end())
 				return it->second.Enable();
 
 			return false;
@@ -61,12 +66,16 @@ namespace ScanningAdvanced {
 		template<typename Definition>
 		bool DisableHook(Definition original)
 		{
+			const auto shared_state = GetSharedState();
+			if (!shared_state)
+				return false;
+
 			void* address = reinterpret_cast<void*>(original);
 			if (address == nullptr)
 				return false;
 
-			const auto it = adv_shared_state->hooks.find(address);
-			if (it != adv_shared_state->hooks.end())
+			const auto it = shared_state->hooks.find(address);
+			if (it != shared_state->hooks.end())
 				return it->second.Disable();
 
 			return false;
@@ -75,12 +84,16 @@ namespace ScanningAdvanced {
 		template<typename Definition>
 		bool HookIsEnabled(Definition original)
 		{
+			const auto shared_state = GetSharedState();
+			if (!shared_state)
+				return false;
+
 			void* address = reinterpret_cast<void*>(original);
 			if (address == nullptr)
 				return false;
 
-			const auto it = adv_shared_state->hooks.find(address);
-			if (it != adv_shared_state->hooks.end())
+			const auto it = shared_state->hooks.find(address);
+			if (it != shared_state->hooks.end())
 				return it->second.IsEnabled();
 
 			return false;
@@ -109,12 +122,10 @@ namespace ScanningAdvanced {
 				uint32_t call_offset = *reinterpret_cast<int32_t*>(ptr + offset + 1);
 				uintptr_t getstate_addr = reinterpret_cast<uintptr_t>(ptr + offset + 5 + static_cast<int32_t>(call_offset));
 
-				adv_shared_state = reinterpret_cast<func_GetSharedState>(getstate_addr)(true);
+				GetSharedState = reinterpret_cast<func_GetSharedState>(getstate_addr);
+				GetSharedState(true);
 			}
 		}
-
-	public:
-		std::shared_ptr<__vtable_SharedState> adv_shared_state;
 	};
 }
 
