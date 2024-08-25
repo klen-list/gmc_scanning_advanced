@@ -30,12 +30,12 @@ namespace ScanningAdvanced {
 	class ClassProxyAdv : public Detouring::ClassProxy<Target, Substitute>
 	{
 	protected:
-		ClassProxyAdv() : ClassProxy()
+		ClassProxyAdv() : Detouring::ClassProxy<Target, Substitute>()
 		{
 			InitHookAccessor();
 		}
 
-		ClassProxyAdv(Target* instance) : ClassProxy(instance)
+		ClassProxyAdv(Target* instance) : Detouring::ClassProxy<Target, Substitute>(instance)
 		{
 			InitHookAccessor();
 		}
@@ -43,12 +43,12 @@ namespace ScanningAdvanced {
 		virtual ~ClassProxyAdv() = default;
 
 	public:
-		func_GetSharedState GetSharedState = [](bool) { return nullptr; }
+		func_GetSharedState GetSharedState = nullptr;
 
 		template<typename Definition>
 		bool EnableHook(Definition original)
 		{
-			const auto shared_state = GetSharedState();
+			const auto shared_state = GetSharedState(false);
 			if (!shared_state)
 				return false;
 
@@ -66,7 +66,7 @@ namespace ScanningAdvanced {
 		template<typename Definition>
 		bool DisableHook(Definition original)
 		{
-			const auto shared_state = GetSharedState();
+			const auto shared_state = GetSharedState(false);
 			if (!shared_state)
 				return false;
 
@@ -84,7 +84,7 @@ namespace ScanningAdvanced {
 		template<typename Definition>
 		bool HookIsEnabled(Definition original)
 		{
-			const auto shared_state = GetSharedState();
+			const auto shared_state = GetSharedState(false);
 			if (!shared_state)
 				return false;
 

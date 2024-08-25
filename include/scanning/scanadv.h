@@ -48,7 +48,7 @@ namespace ScanningAdvanced
 		static SourceSDK::FactoryLoader VPhysic("vphysics");
 		static SourceSDK::FactoryLoader Engine("engine");
 	}
-	
+
 	static SymbolFinder symbolfinder;
 
 	template <class T>
@@ -96,18 +96,29 @@ namespace ScanningAdvanced
 
 	typedef void (__cdecl* UTIL_Remove_t)(CBaseEntity* pEnt);
 	UTIL_Remove_t UTIL_Remove();
-	
+
 	typedef CBaseEntity* (__cdecl* GMEntityByIndex_t)(int32_t index);
 	GMEntityByIndex_t GMEntityByIndex();
 
 	typedef bool (DIFF_WINUNIX(__thiscall, __cdecl)* CBaseClient_ProcessStringCmd_t)(CBaseClient* client, uintptr_t* cmd);
 	CBaseClient_ProcessStringCmd_t CBaseClient_ProcessStringCmd();
-	
+
 	typedef void (__cdecl* GModAutoRefresh_HandleLuaFileChange_t)(const std::string &file);
 	GModAutoRefresh_HandleLuaFileChange_t GModAutoRefresh_HandleLuaFileChange();
 
+#ifdef SYSTEM_WINDOWS
 	typedef void (__cdecl* PhysFrame_t)(float deltaTime);
+#elif SYSTEM_LINUX
+	// Fix for usercall of PhysFrame
+	// Use this macro for get deltaTime arg
+	#define SCANADV_GET_XMM0(foo_float) __asm__ volatile("movss %%xmm0, %0" :: "m" (foo_float))
+	// Use this macro before calling trampoline for restoring deltaTime arg
+	// (If you add floats in code before call)
+	#define SCANADV_SET_XMM0(bar_float) __asm__ volatile("movss %0, %%xmm0\n" :: "m" (bar_float))
+
+	typedef void (*PhysFrame_t)();
 	PhysFrame_t PhysFrame();
+#endif
 
 	typedef int(__cdecl* CObjectPairHash_RemoveAllPairsForObject_t)(CObjectPairHash* hash, void* pObject);
 	CObjectPairHash_RemoveAllPairsForObject_t CObjectPairHash_RemoveAllPairsForObject();
