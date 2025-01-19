@@ -22,7 +22,7 @@ if not gmcommon then
 end
 
 include(gmcommon or "third-party/garrysmod_common")
-include "third-party/scanning-advanced"
+include "third-party/gmc_scanning_advanced"
 
 CreateWorkspace { name = "mymodule" }
 	CreateProject { serverside = true }
